@@ -20,9 +20,9 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
           script: |
-            gr-docker rm -f banco
-            gr-docker rm -f api
-            gr-docker rm -f front
+            gr-docker rm banco
+            gr-docker rm api
+            gr-docker rm front
             gr-docker network rm dados
             gr-docker network rm web
             gr-docker network create dados --interna
