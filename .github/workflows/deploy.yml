@@ -20,9 +20,9 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
           script: |
-            gr-docker network create dados --interna
-            gr-docker network create web
-            gr-docker volume create pgdata
+            gr-docker network create dados --interna --if-not-exists
+            gr-docker network create web --if-not-exists
+            gr-docker volume create pgdata --if-not-exists
             gr-docker rm -f banco
             gr-docker rm -f api
             gr-docker rm -f front
