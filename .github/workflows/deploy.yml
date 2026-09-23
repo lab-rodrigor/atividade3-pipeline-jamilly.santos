@@ -20,11 +20,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
           script: |
-            gr-docker rm -f banco
-            gr-docker rm -f api
-            gr-docker rm -f front
             gr-docker run -d --name banco --network dados -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=${{ secrets.DB_SENHA }} -e POSTGRES_DB=pokedex postgres:17-alpine
             gr-docker run -d --name api --network dados -e POSTGRES_HOST=gr-jamilly-santos-banco -e POSTGRES_DB=pokedex -e POSTGRES_PASSWORD=${{ secrets.DB_SENHA }} gr-atv2-api:1
             gr-docker network connect web api
             gr-docker run -d --name front --network web -p 23130:80 -e API=gr-jamilly-santos-api -e DEPLOY_SHA=${{ github.sha }} gr-atv2-front:1
-            
