@@ -20,12 +20,14 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
           script: |
-            gr-docker network create dados --interna --if-not-exists
-            gr-docker network create web --if-not-exists
-            gr-docker volume create pgdata --if-not-exists
             gr-docker rm -f banco
             gr-docker rm -f api
             gr-docker rm -f front
+            gr-docker network rm dados
+            gr-docker network rm web
+            gr-docker network create dados --interna
+            gr-docker network create web
+            gr-docker volume create pgdata
             gr-docker run -d --name banco --network dados -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=${{ secrets.DB_SENHA }} -e POSTGRES_DB=pokedex postgres:17-alpine
             gr-docker run -d --name api --network dados -e POSTGRES_HOST=gr-jamilly-santos-banco -e POSTGRES_DB=pokedex -e POSTGRES_PASSWORD=${{ secrets.DB_SENHA }} gr-atv2-api:1
             gr-docker network connect web api
